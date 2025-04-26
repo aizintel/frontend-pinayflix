@@ -105,7 +105,7 @@ const videoList = ref<VideoItem[]>([
     <div class="container mx-auto relative">
       <div class="flex items-center mb-6">
         <div class="w-1 h-6 bg-red-600 mr-3"></div>
-        <h2 class="text-2xl md:text-3xl font-bold">Latest Now</h2>
+        <h2 class="text-2xl md:text-3xl font-bold">Trending Now</h2>
       </div>
 
      <VideoCard :items="videoList"></VideoCard>

@@ -1,9 +1,7 @@
-<script lang="ts">
+<script setup lang="ts">
 </script>
 
 <template>
-    
-    <!-- Footer -->
     <footer class="py-10 px-4 bg-black border-t border-gray-800">
       <div class="container mx-auto">
         <div class="flex flex-col md:flex-row justify-between items-center">
