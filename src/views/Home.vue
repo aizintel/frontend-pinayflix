@@ -1,44 +1,63 @@
 <script setup lang="ts">
-import Header from '../components/Header.vue'
+import Header from '../components/Header.vue';
 import ScrollToTopButton from '../components/buttons/ScrollToTopButton.vue';
 import Hero from '../components/heros/Hero.vue';
-import Latest from '../components/Latest.vue';
-import Popular from '../components/Popular.vue';
 import Footer from '../components/Footer.vue';
-import Trending from '../components/Trending.vue';
 
 
+import { homeServices } from '../services/home.service';
+import { popularServices } from '../services/popular.service';
+import { onMounted } from 'vue';
+import Slider from '../components/slider/Slider.vue';
 
+const popularService = popularServices();
+const homeService = homeServices();
+
+onMounted(async () => {
+    try {
+
+        await popularService.getPopularVideos(),
+            await homeService.getHomeVideos()
+
+
+    } catch (error) {
+        if (error instanceof Error) {
+            console.error("An error occurred:", error.message);
+        } else {
+            console.error("Unknown error:", error);
+        }
+    }
+});
 </script>
 
+
+
 <template>
-  <div id="app">
-    <header>
-      <Header />
-    </header>
+    <div id="app">
+        <header>
+            <Header />
+        </header>
 
-    <main class="min-h-screen bg-black text-white">
-      <section>
-        <Hero />
-      </section>
+        <main class="min-h-screen bg-black text-white">
+            <section>
+                <Hero />
+            </section>
 
-      <section aria-labelledby="latest">
-        <Latest />
-      </section>
+            <section aria-labelledby="latest">
+                <Slider :videoList="homeService.videoList" :header="'Now latest'" />
+            </section>
 
-      <section aria-labelledby="trending">
-        <Trending />
-      </section>
+            <section aria-labelledby="popular">
+                <Slider :videoList="popularService.videoList" :header="'Now Popular'" />
+            </section>
 
-      <section aria-labelledby="trending">
-        <Popular />
-      </section>
 
-      <ScrollToTopButton />
-    </main>
 
-    <footer>
-      <Footer />
-    </footer>
-  </div>
+            <ScrollToTopButton />
+        </main>
+
+        <footer>
+            <Footer />
+        </footer>
+    </div>
 </template>

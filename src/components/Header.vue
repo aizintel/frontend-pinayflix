@@ -43,7 +43,7 @@ onBeforeUnmount(() => {
               <ul tabindex="0"
                 class="menu menu-sm dropdown-content bg-black/95 text-white rounded-box mt-3 w-60 p-3 shadow-lg z-30">
                 <li>
-                  <router-link to="/category" class="px-4 hover:bg-red-600/30 rounded-lg transition-colors">
+                  <router-link to="/pinay/category" class="px-4 hover:bg-red-600/30 rounded-lg transition-colors">
                     Category
                   </router-link>
                 </li>
@@ -68,7 +68,7 @@ onBeforeUnmount(() => {
           <div class="navbar-center hidden lg:flex">
             <ul class="menu menu-horizontal text-lg font-medium">
               <li>
-                <router-link to="/category" class="px-4 hover:bg-red-600/30 rounded-lg transition-colors">
+                <router-link to="/pinay/category" class="px-4 hover:bg-red-600/30 rounded-lg transition-colors">
                   Category
                 </router-link>
               </li>
