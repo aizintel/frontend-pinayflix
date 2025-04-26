@@ -1,17 +1,19 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import VideoCard from './cards/VideoCard.vue';
-
+import Footer from '../components/Footer.vue';
+import Header from '../components/Header.vue';
+import HeroBanner from '../components/heros/HeroBanner.vue';
+import ScrollToTopButton from '../components/buttons/ScrollToTopButton.vue';
+import BannerCard from '../components/cards/BannerCard.vue';
 
 interface VideoItem {
   title?: string;
-  img: string;
+  img?: string;
   link?: string;
   video?: string;
   date?: string;
   author?: string;
 }
-
 
 const videoList = ref<VideoItem[]>([
   {
@@ -95,24 +97,30 @@ const videoList = ref<VideoItem[]>([
     author: "From: UPLOADER XXX"
   },
 ])
-
-
-
 </script>
 
 <template>
-  <section class="py-12 px-4 bg-black">
-    <div class="container mx-auto relative">
-      <div class="flex items-center mb-6">
-        <div class="w-1 h-6 bg-red-600 mr-3"></div>
-        <h2 class="text-2xl md:text-3xl font-bold">Latest Now</h2>
-      </div>
+  <div id="app">
+    <header>
+      <Header />
+    </header>
 
-      <VideoCard :items="videoList"></VideoCard>
+    <main class="min-h-screen bg-black text-white">
+      <section>
+        <HeroBanner :header="'Most Longest'" :text="'Sinubo ang batuta ni pinsan - PINAYFLIX SEX VIDEOS'"></HeroBanner>
+      </section>
 
-    </div>
-  </section>
+      <section>
+        <section>
+          <BannerCard :header="'Most Longest'" :items="videoList"></BannerCard>
+        </section>
+      </section>
+
+      <ScrollToTopButton />
+    </main>
+
+    <footer>
+      <Footer />
+    </footer>
+  </div>
 </template>
-
-
-<style scoped></style>
