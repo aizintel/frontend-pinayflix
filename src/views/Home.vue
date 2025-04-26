@@ -4,10 +4,10 @@ import ScrollToTopButton from '../components/buttons/ScrollToTopButton.vue';
 import Hero from '../components/heros/Hero.vue';
 import Footer from '../components/Footer.vue';
 
-
 import { homeServices } from '../services/home.service';
 import { popularServices } from '../services/popular.service';
 import { onMounted } from 'vue';
+
 import Slider from '../components/slider/Slider.vue';
 
 const popularService = popularServices();

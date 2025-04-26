@@ -11,21 +11,13 @@ interface VideoItem {
 
 const props = defineProps<{
   items: VideoItem[];  
-  header?: string;
 }>();
 
 </script>
 
 <template>
 
-<section class="container mx-auto px-4 mb-12">
-      <div class="flex items-center justify-between mb-4">
-        <h2 class="text-2xl md:text-3xl font-bold border-l-4 border-red-600 pl-3">{{ props.header }}</h2>
-        <a href="#" class="text-sm text-gray-400 hover:text-white transition-colors">View All</a>
-      </div>
-      
-    
-  
+
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-4">
         <div v-for="item in props.items" :key="item.img" class="transition-transform duration-300 hover:scale-105">
           <div class="relative rounded-lg overflow-hidden group">
@@ -48,5 +40,7 @@ const props = defineProps<{
           <h3 class="text-sm mt-2 line-clamp-1">{{ item.title }}</h3>
         </div>
       </div>
-    </section>
+
+
+   
 </template>
