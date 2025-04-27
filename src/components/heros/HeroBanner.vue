@@ -9,7 +9,7 @@ const props = defineProps<{
 
 <template>
     <div class="relative w-full h-[70vh] mb-12">
-        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent z-10"></div>
+        <div class="absolute inset-0 min-h-screen bg-gradient-to-t from-black via-black/80 to-black/10 z-10"></div>
         <img src="https://pinayflix.me/wp-content/uploads/2025/04/Sinubo-ang-batuta-ni-pinsan.jpg" alt="Hero Banner"
             class="w-full h-full object-cover" />
         <div class="absolute bottom-0 left-0 z-20 p-6 md:p-12 w-full">

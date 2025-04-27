@@ -94,16 +94,16 @@ const goToNextPage = () => {
     }
 };
 
-watch(
-    () => route.fullPath,
-    () => {
-        window.scrollTo(0, 0);
-    }
-);
+// watch(
+//     () => route.fullPath,
+//     () => {
+//         window.scrollTo(0, 0);
+//     }
+// );
 
-onMounted(() => {
-    window.scrollTo(0, 0);
-});
+// onMounted(() => {
+//     window.scrollTo(0, 0);
+// });
 </script>
 
 <template>
@@ -125,7 +125,7 @@ onMounted(() => {
     </section>
 
 
-    <div v-if="!loading" class="flex justify-center items-center mb-10 px-4">
+    <div class="flex justify-center items-center mb-10 px-4">
         <div class="join flex flex-wrap justify-center items-center gap-1 sm:gap-2">
 
             <button

@@ -7,7 +7,7 @@ import HeroBanner from '../components/heros/HeroBanner.vue';
 import ScrollToTopButton from '../components/buttons/ScrollToTopButton.vue';
 
 import { mostViewServices } from '../services/most-viewed';
-import SliderContent from '../components/slider/SliderContent.vue';
+import SliderContent from '../components/slider/ContentSlider.vue';
 
 const route = useRoute();
 
