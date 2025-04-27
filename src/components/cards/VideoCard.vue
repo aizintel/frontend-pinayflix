@@ -26,7 +26,7 @@ defineProps<{
       <div v-for="(item, index) in items" :key="item.img || index" class="flex-shrink-0 w-[250px] relative group">
         <div class="relative overflow-hidden rounded-lg">
           <img :src="item.img" :alt="item.title"
-            class="w-full h-[325px] object-cover transition-transform duration-300 group-hover:scale-110" />
+            class="w-full h-50 object-cover transition-transform duration-300 group-hover:scale-110" />
           <div
             class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
             <button class="btn btn-circle bg-red-600 hover:bg-red-700 border-none">
@@ -40,13 +40,7 @@ defineProps<{
 
         </div>
         <h3 class="mt-2 text-sm font-medium truncate">{{ item.title }}</h3>
-
-
-
-
       </div>
     </div>
   </div>
 </template>
-
-<style scoped></style>

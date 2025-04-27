@@ -40,7 +40,7 @@ const scrollRight = (): void => {
       left: 450,
       behavior: 'smooth',
     });
-    console.log(scrollContainer)
+
   }
 };
 
@@ -54,9 +54,6 @@ watch(() => props.videoList, (newVal, oldVal) => {
 
 <template>
   <section class="py-12 px-4 bg-black">
-
-
-
     <div class="container mx-auto relative">
       <div class="flex items-center mb-6">
         <div class="w-1 h-6 bg-red-600 mr-3"></div>
@@ -81,7 +78,7 @@ watch(() => props.videoList, (newVal, oldVal) => {
 
           <div v-if="loading" v-for="_ in 9" class="flex-shrink-0 w-[250px] relative group">
             <div class="relative overflow-hidden rounded-lg">
-              <div class="w-full h-[325px] bg-gray-300 animate-pulse rounded-lg"></div>
+              <div class="w-full h-50 bg-gray-300 animate-pulse rounded-lg"></div>
             </div>
           </div>
 
@@ -102,7 +99,7 @@ watch(() => props.videoList, (newVal, oldVal) => {
   display: flex;
   left: -.6px;
   align-items: center;
-  height: 90%;
+  height: 80%;
   z-index: 7;
   background: linear-gradient(90deg, #000, rgba(0, 0, 0, .02));
   transition: all .3s ease-out !important;
@@ -113,9 +110,9 @@ watch(() => props.videoList, (newVal, oldVal) => {
   position: absolute;
   display: flex;
   align-items: center;
-  height: 90%;
+  height: 80%;
   right: -.6px;
-  z-index: 9;
+  z-index: 7;
   background: linear-gradient(270deg, #000, rgba(0, 0, 0, .02));
   transition: all .3s ease-out !important;
   cursor: pointer;
