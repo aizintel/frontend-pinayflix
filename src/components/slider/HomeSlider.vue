@@ -120,4 +120,13 @@ watch(() => props.videoList, (newVal, oldVal) => {
   transition: all .3s ease-out !important;
   cursor: pointer;
 }
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
 </style>
