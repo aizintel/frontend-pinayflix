@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { ref, onMounted, computed, watch } from 'vue';
+import { ref, onMounted, computed, watch, onUnmounted } from 'vue';
 import Header from '../components/Header.vue';
 import ScrollToTopButton from '../components/buttons/ScrollToTopButton.vue';
 import Footer from '../components/Footer.vue';
-import { Play, Pause, Volume2, VolumeX, Maximize, SkipForward, SkipBack } from 'lucide-vue-next';
+import { Play, Pause, Volume2, VolumeX, Maximize, SkipForward, SkipBack, AlertCircle } from 'lucide-vue-next';
 import RecommendedCard from '../components/cards/RecommendedCard.vue'
 import { streamServices } from '../services/stream.service';
 
@@ -16,21 +16,27 @@ let videoSource = ref('')
 let videoAuthor = ref('')
 let videoTitle = ref('')
 
-videoSource.value = route.query.video as string ?? ''
-videoAuthor.value = route.query.author as string ?? ''
-videoTitle.value = route.query.title as string ?? ''
+// Initialize video details from route query parameters
+const updateVideoDetails = () => {
+  videoSource.value = route.query.video as string ?? '';
+  videoAuthor.value = route.query.author as string ?? '';
+  videoTitle.value = route.query.title as string ?? '';
+};
+
+// Call updateVideoDetails initially
+updateVideoDetails();
 
 watch(
   () => route.fullPath,
   () => {
-    window.scrollTo(0, 0);
-    videoSource.value = route.query.video as string ?? ''
-    videoAuthor.value = route.query.author as string ?? ''
-    videoTitle.value = route.query.title as string ?? ''
+    updateVideoDetails();
   },
   { immediate: true }
-)
+);
 
+
+const videoError = ref(false);
+const errorMessage = ref('');
 const videoRef = ref<HTMLVideoElement | null>(null);
 const videoContainer = ref<HTMLDivElement | null>(null);
 const isPlaying = ref(false);
@@ -41,6 +47,7 @@ const volume = ref(1);
 const isFullscreen = ref(false);
 const showControls = ref(true);
 const controlsTimeout = ref<number | null>(null);
+const isLoading = ref(true);
 
 
 const formatTime = (time: number) => {
@@ -53,13 +60,18 @@ const formattedCurrentTime = computed(() => formatTime(currentTime.value));
 const formattedDuration = computed(() => formatTime(duration.value));
 const progressPercentage = computed(() => (duration.value ? (currentTime.value / duration.value) * 100 : 0));
 
+
 const togglePlay = () => {
-  if (!videoRef.value) return;
+  if (!videoRef.value || videoError.value) return;
   
   if (isPlaying.value) {
     videoRef.value.pause();
   } else {
-    videoRef.value.play();
+    videoRef.value.play().catch(err => {
+      console.error('Error playing video:', err);
+      videoError.value = true;
+      errorMessage.value = 'Failed to play video. Please try again later.';
+    });
   }
   isPlaying.value = !isPlaying.value;
   showControlsTemporarily();
@@ -131,6 +143,32 @@ const loadedMetadata = () => {
   if (!videoRef.value) return;
   
   duration.value = videoRef.value.duration;
+  isLoading.value = false;
+};
+
+const handleVideoError = (e: Event) => {
+  videoError.value = true;
+  isLoading.value = false;
+  const video = e.target as HTMLVideoElement;
+  
+  switch (video.error?.code) {
+    case 1:
+      errorMessage.value = 'Video playback was aborted';
+      break;
+    case 2:
+      errorMessage.value = 'Network error occurred while loading the video';
+      break;
+    case 3:
+      errorMessage.value = 'Video decoding failed';
+      break;
+    case 4:
+      errorMessage.value = 'Video format not supported';
+      break;
+    default:
+      errorMessage.value = 'An unknown error occurred';
+  }
+  
+  console.error('Video error:', video.error);
 };
 
 const showControlsTemporarily = () => {
@@ -151,17 +189,87 @@ const handleMouseMove = () => {
   showControlsTemporarily();
 };
 
+const handleKeydown = (e: KeyboardEvent) => {
+  if (!videoRef.value) return;
+  
+  // Only handle keyboard events when the video container is focused or in fullscreen
+  const isVideoFocused = document.activeElement === videoRef.value || 
+                         document.activeElement === videoContainer.value ||
+                         !!document.fullscreenElement;
+  
+  if (!isVideoFocused && !isFullscreen.value) return;
+  
+  switch (e.key) {
+    case ' ':  // Space key
+      e.preventDefault();
+      togglePlay();
+      break;
+    case 'Enter':
+      e.preventDefault();
+      toggleFullscreen();
+      break;
+    case 'ArrowRight':
+      e.preventDefault();
+      skipForward();
+      break;
+    case 'ArrowLeft':
+      e.preventDefault();
+      skipBackward();
+      break;
+    case 'm':
+    case 'M':
+      e.preventDefault();
+      toggleMute();
+      break;
+    case 'f':
+    case 'F':
+      e.preventDefault();
+      toggleFullscreen();
+      break;
+  }
+};
 
+const retryVideo = () => {
+  if (!videoRef.value) return;
+  
+  videoError.value = false;
+  errorMessage.value = '';
+  isLoading.value = true;
+  
+  // Force reload the video
+  const currentSrc = videoSource.value;
+  videoSource.value = '';
+  
+  setTimeout(() => {
+    videoSource.value = currentSrc;
+    if (videoRef.value) {
+      videoRef.value.load();
+      videoRef.value.play().catch(err => {
+        console.error('Error playing video on retry:', err);
+        videoError.value = true;
+        errorMessage.value = 'Failed to play video. Please try again later.';
+      });
+    }
+  }, 100);
+};
 
 onMounted(() => {
   document.addEventListener('fullscreenchange', () => {
     isFullscreen.value = !!document.fullscreenElement;
   });
+  
+  // Add keyboard event listener
+  window.addEventListener('keydown', handleKeydown);
 });
 
-
-
-
+onUnmounted(() => {
+  // Clean up event listeners
+  window.removeEventListener('keydown', handleKeydown);
+  
+  if (controlsTimeout.value) {
+    clearTimeout(controlsTimeout.value);
+  }
+});
 </script>
 
 <template>
@@ -178,18 +286,46 @@ onMounted(() => {
           class="relative w-full aspect-video bg-gray-900 rounded-lg overflow-hidden shadow-xl mb-8"
           @mousemove="handleMouseMove"
           @touchstart="showControlsTemporarily"
-        >
+          tabindex="0"
+        > 
           <video 
             ref="videoRef"
             class="w-full h-full object-contain"
             :src="videoSource"
+            preload="metadata"
             @play="isPlaying = true"
             @pause="isPlaying = false"
             @timeupdate="updateProgress"
             @loadedmetadata="loadedMetadata"
+            @error="handleVideoError"
             @click="togglePlay"
+            @waiting="isLoading = true"
+            @canplay="isLoading = false"
           ></video>
           
+          <!-- Loading Indicator -->
+          <div 
+            v-if="isLoading && !videoError" 
+            class="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm"
+          >
+            <div class="loading loading-spinner loading-lg text-white"></div>
+          </div>
+          
+          <!-- Error Display -->
+          <div 
+            v-if="videoError" 
+            class="absolute inset-0 flex flex-col items-center justify-center bg-black/70 backdrop-blur-sm p-4 text-center"
+          >
+            <AlertCircle class="w-12 h-12 text-red-500 mb-2" />
+            <h3 class="text-lg font-semibold mb-2">Video Error</h3>
+            <p class="text-gray-300 mb-4">{{ errorMessage }}</p>
+            <button 
+              @click="retryVideo" 
+              class="px-4 py-2 bg-red-600 hover:bg-red-700 rounded-md transition-colors"
+            >
+              Retry
+            </button>
+          </div>
 
           <div 
             class="absolute inset-0 flex flex-col justify-between p-4 bg-gradient-to-t from-black/70 to-transparent transition-opacity duration-300"
@@ -207,7 +343,7 @@ onMounted(() => {
             
      
             <div 
-              v-if="!isPlaying" 
+              v-if="!isPlaying && !videoError && !isLoading" 
               class="absolute inset-0 flex items-center justify-center"
               @click="togglePlay"
             >
@@ -229,6 +365,7 @@ onMounted(() => {
                   :value="progressPercentage"
                   @input="seekVideo"
                   class="w-full h-1 bg-gray-600 rounded-full appearance-none cursor-pointer accent-white"
+                  :disabled="videoError"
                 />
               </div>
               
@@ -239,6 +376,7 @@ onMounted(() => {
                   <button 
                     @click="togglePlay" 
                     class="p-1 hover:bg-white/10 rounded-full transition-colors"
+                    :disabled="videoError"
                   >
                     <Pause v-if="isPlaying" class="w-5 h-5" />
                     <Play v-else class="w-5 h-5" />
@@ -248,6 +386,7 @@ onMounted(() => {
                   <button 
                     @click="skipBackward" 
                     class="p-1 hover:bg-white/10 rounded-full transition-colors"
+                    :disabled="videoError"
                   >
                     <SkipBack class="w-5 h-5" />
                   </button>
@@ -256,6 +395,7 @@ onMounted(() => {
                   <button 
                     @click="skipForward" 
                     class="p-1 hover:bg-white/10 rounded-full transition-colors"
+                    :disabled="videoError"
                   >
                     <SkipForward class="w-5 h-5" />
                   </button>
@@ -264,6 +404,7 @@ onMounted(() => {
                     <button 
                       @click="toggleMute" 
                       class="p-1 hover:bg-white/10 rounded-full transition-colors"
+                      :disabled="videoError"
                     >
                       <Volume2 v-if="!isMuted" class="w-5 h-5" />
                       <VolumeX v-else class="w-5 h-5" />
@@ -276,6 +417,7 @@ onMounted(() => {
                       :value="volume"
                       @input="changeVolume"
                       class="w-16 md:w-24 h-1 bg-gray-600 rounded-full appearance-none cursor-pointer accent-white"
+                      :disabled="videoError"
                     />
                   </div>
                   
@@ -291,6 +433,7 @@ onMounted(() => {
                   <button 
                     @click="toggleFullscreen" 
                     class="p-1 hover:bg-white/10 rounded-full transition-colors"
+                    :disabled="videoError"
                   >
                     <Maximize class="w-5 h-5" />
                   </button>
@@ -344,9 +487,7 @@ onMounted(() => {
             </div>
           </div>
       
-          <div class="space-y-4">
-            <h3 class="text-lg font-medium">Recommended</h3>
-            
+          <div class="space-y-4"> 
             <div class="space-y-3">
               <!-- Recommended Video Item (repeat as needed) -->
              <RecommendedCard :videoList="streamService.videoList"></RecommendedCard>
@@ -398,5 +539,11 @@ input[type="range"]::-moz-range-thumb {
 /* Hide controls when video is playing and mouse is inactive */
 video::-webkit-media-controls {
   display: none !important;
+}
+
+/* Disabled button styling */
+button[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 </style>

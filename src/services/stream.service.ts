@@ -8,5 +8,6 @@ export const streamServices = defineStore('stream', {
         setVideoList(video: any) {
           this.videoList = video
         }
-      }
+      },
+      persist: true,
 });

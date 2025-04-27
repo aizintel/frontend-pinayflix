@@ -4,12 +4,15 @@ import Home from '../views/Home.vue'
 import MostViewed from '../views/MostViewed.vue'
 import MostPopular from '../views/MostPopular.vue'
 import MostLongest from '../views/MostLongest.vue'
-import Category from '../views/Category.vue'
+
 import Stream from '../views/Stream.vue'
+import Random from '../views/Random.vue'
+import Latest from '../views/Latest.vue'
 
 const routes = [
     { path: '/', component: Home, name: 'home' },
-    { path: '/pinay/category', component: Category, name: 'category' },
+    { path: '/pinay/random/:page?', component: Random, name: 'random' },
+    { path: '/pinay/latest/:page?', component: Latest, name: 'latest' },
     { path: '/pinay/most-viewed/:page?', component: MostViewed, name: 'most-viewed' },
     { path: '/pinay/most-popular/:page?', component: MostPopular, name: 'most-popular' },
     { path: '/pinay/most-longest/:page?', component: MostLongest, name: 'most-longest' },

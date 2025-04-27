@@ -38,7 +38,6 @@ defineProps<{
                 <div>
                   <h4 class="font-medium text-sm">{{ item.title }}</h4>
                   <p class="text-xs text-gray-400">{{ item.author }}</p>
-                  <p class="text-xs text-gray-400">250K views • 1 week ago</p>
                 </div>
                
               </div>
