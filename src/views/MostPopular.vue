@@ -1,20 +1,39 @@
 <script setup lang="ts">
+import { onMounted, watch } from 'vue';
+import { useRoute } from 'vue-router';
 import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue';
 import HeroBanner from '../components/heros/HeroBanner.vue';
 import ScrollToTopButton from '../components/buttons/ScrollToTopButton.vue';
-import BannerCard from '../components/cards/BannerCard.vue';
 
+import { mostViewServices } from '../services/most-viewed';
+import SliderContent from '../components/slider/SliderContent.vue';
 
-import { popularServices } from '../services/popular.service';
-import { onMounted } from 'vue';
+const route = useRoute();
 
-const popularService = popularServices();
+const pageParam = route.params.page;
+const page = Array.isArray(pageParam) ? pageParam[0] : '1'; 
+
+const mostViewService = mostViewServices();
+
+const fetchVideos = async (page: string) => {
+  if (page) {
+    await mostViewService.getMostVideosByPage(page);
+  } else {
+    await mostViewService.getMostViewvideos();
+  }
+};
 
 onMounted(async () => {
-    await popularService.getPopularVideos();
-})
+  await fetchVideos(page);
+});
 
+watch(
+  () => route.params.page,
+  async (newPage) => {
+    await fetchVideos(newPage as string);
+  }
+);
 </script>
 
 <template>
@@ -29,9 +48,8 @@ onMounted(async () => {
       </section>
 
       <section>
-        <section>
-          <BannerCard :header="'Most popular'" :items="popularService.videoList"></BannerCard>
-        </section>
+        <SliderContent :header="'Most viewed'" :items="mostViewService.videoList" :page="page || '1'"
+          :totalPages="Number(mostViewService.totalPages)" :pathName="'most-popular'" />
       </section>
 
       <ScrollToTopButton />

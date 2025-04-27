@@ -35,7 +35,7 @@ const props = defineProps<{
               </div>
             </div>
         
-            <div class="absolute top-2 left-2 bg-red-600 text-xs px-2 py-1 rounded">NEW</div>
+            <!-- <div class="absolute top-2 left-2 bg-red-600 text-xs px-2 py-1 rounded">Most Viewed</div> -->
           </div>
           <h3 class="text-sm mt-2 line-clamp-1">{{ item.title }}</h3>
         </div>

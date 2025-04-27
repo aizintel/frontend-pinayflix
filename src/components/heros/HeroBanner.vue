@@ -13,7 +13,7 @@ const props = defineProps<{
         <img src="https://pinayflix.me/wp-content/uploads/2025/04/Sinubo-ang-batuta-ni-pinsan.jpg" alt="Hero Banner"
             class="w-full h-full object-cover" />
         <div class="absolute bottom-0 left-0 z-20 p-6 md:p-12 w-full">
-            <h1 class="text-4xl md:text-6xl font-bold mb-2">{{ props.header }}</h1>
+            <h1 class="text-3xl md:text-5xl font-bold mb-2">{{ props.header }}</h1>
             <p class="text-lg md:text-xl mb-4 max-w-2xl">{{ props.text }}</p>
             <button class="btn bg-red-600 hover:bg-red-700 text-white border-none">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">

@@ -12,7 +12,7 @@
     <!-- Hero Content -->
     <div class="absolute bottom-0 left-0 w-full pb-16 md:pb-24 px-6 md:px-12">
       <div class="container mx-auto max-w-5xl">
-        <h1 class="text-3xl md:text-5xl font-bold mb-4 text-white">Flex ni madam ang kanyang pepe - PINAYFLIX SEX VIDEOS
+        <h1 class="text-2xl md:text-3xl font-bold mb-4 text-white">Flex ni madam ang kanyang pepe - PINAYFLIX SEX VIDEOS
         </h1>
         <p class="text-xl md:text-2xl font-medium mb-6 text-gray-200">PINAYFLIX Love VIDEOS</p>
 

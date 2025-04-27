@@ -8,7 +8,7 @@ import { homeServices } from '../services/home.service';
 import { popularServices } from '../services/popular.service';
 import { onMounted } from 'vue';
 
-import Slider from '../components/slider/Slider.vue';
+import HomeSlider from '../components/slider/HomeSlider.vue';
 
 const popularService = popularServices();
 const homeService = homeServices();
@@ -44,11 +44,11 @@ onMounted(async () => {
             </section>
 
             <section aria-labelledby="latest">
-                <Slider :videoList="homeService.videoList" :header="'Now latest'" />
+                <HomeSlider :videoList="homeService.videoList" :header="'Now latest'" />
             </section>
 
             <section aria-labelledby="popular">
-                <Slider :videoList="popularService.videoList" :header="'Now Popular'" />
+                <HomeSlider :videoList="popularService.videoList" :header="'Now Popular'" />
             </section>
 
 
