@@ -31,8 +31,8 @@ const latestService = latestServices();
 
 const fetchVideos = async (page: string) => {
   if (page) {
-    await latestService.getLatestVideosByPage(page);
-
+    const data = await latestService.getLatestVideosByPage(page);
+    console.log(data);
 
     const video = latestService.videoList[Math.floor(Math.random() * latestService.videoList.length)] as Video;
 
@@ -42,9 +42,9 @@ const fetchVideos = async (page: string) => {
     bannerAuthor.value = video.author;
 
   } else {
-    await latestService.getLatestVideosByPage('1');
+    const data = await latestService.getLatestVideosByPage('1');
     const video = latestService.videoList[Math.floor(Math.random() * latestService.videoList.length)] as Video;
-
+    console.log(data);
 
     bannerHeader.value = video.title;
     bannerImage.value = video.img;

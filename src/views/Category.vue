@@ -48,18 +48,14 @@ const navigateToCategory = (slug: string) => {
       <!-- Categories Section -->
       <section class="container mx-auto px-4 py-8">
         <h2 class="text-2xl md:text-3xl font-bold mb-6 text-center">Categories</h2>
-        
+
         <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
-          <div 
-            v-for="category in categories" 
-            :key="category.id"
+          <div v-for="category in categories" :key="category.id"
             class="cursor-pointer transition-all duration-300 transform hover:scale-105"
-            @click="navigateToCategory(category.slug)"
-          >
-            <div 
+            @click="navigateToCategory(category.slug)">
+            <div
               class="bg-gray-900 border border-gray-800 rounded-lg p-4 h-full flex flex-col items-center justify-center text-center hover:bg-gray-800 hover:border-red-500"
-              :class="{ 'bg-red-600/20 border-red-500': activeCategory === category.slug }"
-            >
+              :class="{ 'bg-red-600/20 border-red-500': activeCategory === category.slug }">
               <div class="text-3xl mb-2">{{ category.icon }}</div>
               <h3 class="font-medium">{{ category.name }}</h3>
             </div>
@@ -70,15 +66,12 @@ const navigateToCategory = (slug: string) => {
       <!-- Popular Categories -->
       <section class="container mx-auto px-4 py-8">
         <h2 class="text-2xl md:text-3xl font-bold mb-6">Popular Categories</h2>
-        
+
         <div class="flex flex-wrap gap-2 mb-8">
-          <button
-            v-for="(category, index) in categories.slice(0, 6)"
-            :key="index"
+          <button v-for="(category, index) in categories.slice(0, 6)" :key="index"
             class="btn btn-sm md:btn-md bg-transparent border border-gray-600 text-white hover:bg-red-600/30 hover:border-red-500 transition-all"
             :class="{ 'bg-red-600 border-red-600': activeCategory === category.slug }"
-            @click="navigateToCategory(category.slug)"
-          >
+            @click="navigateToCategory(category.slug)">
             {{ category.name }}
           </button>
         </div>
@@ -91,10 +84,8 @@ const navigateToCategory = (slug: string) => {
             <div class="text-center md:text-left">
               <h2 class="text-2xl md:text-3xl font-bold mb-2">Featured Category</h2>
               <p class="text-gray-400 mb-4">Explore our most popular content</p>
-              <button 
-                class="btn bg-red-600 hover:bg-red-700 text-white border-red-600 hover:border-red-700"
-                @click="navigateToCategory('featured')"
-              >
+              <button class="btn bg-red-600 hover:bg-red-700 text-white border-red-600 hover:border-red-700"
+                @click="navigateToCategory('featured')">
                 Browse Featured
               </button>
             </div>
@@ -112,14 +103,11 @@ const navigateToCategory = (slug: string) => {
       <!-- Recently Viewed Categories -->
       <section class="container mx-auto px-4 py-8 mb-12">
         <h2 class="text-2xl md:text-3xl font-bold mb-6">Recently Viewed</h2>
-        
+
         <div class="join flex flex-wrap justify-center items-center gap-1 sm:gap-2">
-          <button
-            v-for="(category, index) in categories.slice(0, 4)"
-            :key="index"
+          <button v-for="(category, index) in categories.slice(0, 4)" :key="index"
             class="join-item btn btn-sm sm:btn-md md:btn-lg bg-transparent border border-gray-600 text-white hover:bg-red-600/30 hover:border-red-500 transition-all"
-            @click="navigateToCategory(category.slug)"
-          >
+            @click="navigateToCategory(category.slug)">
             {{ category.name }}
           </button>
         </div>

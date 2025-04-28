@@ -24,14 +24,14 @@ let bannerAuthor = ref<string | null>(null);
 const route = useRoute();
 
 const pageParam = route.params.page;
-const page = Array.isArray(pageParam) ? pageParam[0] : '1'; 
+const page = Array.isArray(pageParam) ? pageParam[0] : '1';
 
 const randomService = randomServices();
 
 const fetchVideos = async (page: string) => {
   if (page) {
-    await randomService.getRandomVideosByPage(page);
-
+    const data = await randomService.getRandomVideosByPage(page);
+    console.log(data);
 
     const video = randomService.videoList[Math.floor(Math.random() * randomService.videoList.length)] as Video;
 
@@ -41,7 +41,8 @@ const fetchVideos = async (page: string) => {
     bannerAuthor.value = video.author;
 
   } else {
-    await randomService.getRandomVideosByPage('1');
+    const data = await randomService.getRandomVideosByPage('1');
+    console.log(data);
     const video = randomService.videoList[Math.floor(Math.random() * randomService.videoList.length)] as Video;
 
 
@@ -73,7 +74,7 @@ watch(
     <main class="min-h-screen bg-black text-white">
       <section>
         <HeroBanner :header="'Random'" :text="bannerHeader" :image="bannerImage" :video="bannerVideo"
-        :author="bannerAuthor"></HeroBanner>
+          :author="bannerAuthor"></HeroBanner>
       </section>
 
       <section>

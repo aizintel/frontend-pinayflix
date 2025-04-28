@@ -24,14 +24,14 @@ let bannerAuthor = ref<string | null>(null);
 const route = useRoute();
 
 const pageParam = route.params.page;
-const page = Array.isArray(pageParam) ? pageParam[0] : '1'; 
+const page = Array.isArray(pageParam) ? pageParam[0] : '1';
 
 const mostViewService = mostViewServices();
 
 const fetchVideos = async (page: string) => {
   if (page) {
-    await mostViewService.getMostVideosByPage(page);
-
+    const data = await mostViewService.getMostVideosByPage(page);
+    console.log(data);
 
     const video = mostViewService.videoList[Math.floor(Math.random() * mostViewService.videoList.length)] as Video;
 
@@ -41,7 +41,8 @@ const fetchVideos = async (page: string) => {
     bannerAuthor.value = video.author;
 
   } else {
-    await mostViewService.getMostVideosByPage('1');
+    const data = await mostViewService.getMostVideosByPage('1');
+    console.log(data);
     const video = mostViewService.videoList[Math.floor(Math.random() * mostViewService.videoList.length)] as Video;
 
 
@@ -74,7 +75,7 @@ watch(
     <main class="min-h-screen bg-black text-white">
       <section>
         <HeroBanner :header="'Most longest'" :text="bannerHeader" :image="bannerImage" :video="bannerVideo"
-        :author="bannerAuthor"></HeroBanner>
+          :author="bannerAuthor"></HeroBanner>
       </section>
 
       <section>

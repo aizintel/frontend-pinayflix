@@ -31,8 +31,8 @@ const popularService = popularServices();
 
 const fetchVideos = async (page: string) => {
   if (page) {
-    await popularService.getPopularVideosByPage(page);
-
+    const data = await popularService.getPopularVideosByPage(page);
+    console.log(data);
 
     const video = popularService.videoList[Math.floor(Math.random() * popularService.videoList.length)] as Video;
 
@@ -42,7 +42,8 @@ const fetchVideos = async (page: string) => {
     bannerAuthor.value = video.author;
 
   } else {
-    await popularService.getPopularVideosByPage('1');
+    const data = await popularService.getPopularVideosByPage('1');
+    console.log(data);
     const video = popularService.videoList[Math.floor(Math.random() * popularService.videoList.length)] as Video;
 
 
