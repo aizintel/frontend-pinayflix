@@ -178,6 +178,16 @@ onBeforeUnmount(() => {
                     Latest
                   </router-link>
                 </li>
+
+                <li>
+                  <router-link 
+                    to="/pinay/random" 
+                    class="px-4 py-2 font-medium rounded-lg transition-colors"
+                    :class="isActive('/pinay/random') ? 'bg-red-600/50 text-white' : 'hover:bg-red-600/30'"
+                  >
+                    Random
+                  </router-link>
+                </li>
                 <li>
                   <router-link 
                     to="/pinay/most-viewed" 
@@ -205,6 +215,7 @@ onBeforeUnmount(() => {
                     Most Popular
                   </router-link>
                 </li>
+                
               </ul>
             </nav>
           </div>
@@ -306,6 +317,14 @@ onBeforeUnmount(() => {
             Latest
           </router-link>
           <router-link 
+            to="/pinay/random" 
+            class="text-xl font-medium py-3 px-4 border-l-4 border-transparent hover:border-red-600 hover:bg-red-600/20 rounded-r-lg transition-all duration-200"
+            :class="{ 'border-red-600 bg-red-600/10': isActive('/pinay/random') }"
+            @click="closeMobileMenu"
+          >
+            Random
+          </router-link>
+          <router-link 
             to="/pinay/most-viewed" 
             class="text-xl font-medium py-3 px-4 border-l-4 border-transparent hover:border-red-600 hover:bg-red-600/20 rounded-r-lg transition-all duration-200"
             :class="{ 'border-red-600 bg-red-600/10': isActive('/most-viewed') }"
@@ -331,7 +350,7 @@ onBeforeUnmount(() => {
           </router-link>
         </nav>
 
-        <!-- Quick Links Grid -->
+        <!-- Quick Links Grid
         <div class="mt-8 border-t border-gray-800 pt-6">
           <h3 class="text-gray-400 text-sm uppercase font-medium mb-4 px-4">Quick Links</h3>
           <div class="grid grid-cols-2 gap-2">
@@ -364,7 +383,7 @@ onBeforeUnmount(() => {
               Popular
             </router-link>
           </div>
-        </div>
+        </div> -->
         
  
       </div>

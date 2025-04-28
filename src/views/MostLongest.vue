@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { onMounted, watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue';
@@ -8,6 +8,18 @@ import ScrollToTopButton from '../components/buttons/ScrollToTopButton.vue';
 
 import { mostViewServices } from '../services/most-viewed';
 import SliderContent from '../components/slider/ContentSlider.vue';
+
+interface Video {
+  title: string;
+  img: string;
+  video: string;
+  author: string;
+}
+
+let bannerHeader = ref<string | null>(null);
+let bannerImage = ref<string | null>(null);
+let bannerVideo = ref<string | null>(null);
+let bannerAuthor = ref<string | null>(null);
 
 const route = useRoute();
 
@@ -19,10 +31,27 @@ const mostViewService = mostViewServices();
 const fetchVideos = async (page: string) => {
   if (page) {
     await mostViewService.getMostVideosByPage(page);
+
+
+    const video = mostViewService.videoList[Math.floor(Math.random() * mostViewService.videoList.length)] as Video;
+
+    bannerHeader.value = video.title;
+    bannerImage.value = video.img;
+    bannerVideo.value = video.video;
+    bannerAuthor.value = video.author;
+
   } else {
-    await mostViewService.getMostViewvideos();
+    await mostViewService.getMostVideosByPage('1');
+    const video = mostViewService.videoList[Math.floor(Math.random() * mostViewService.videoList.length)] as Video;
+
+
+    bannerHeader.value = video.title;
+    bannerImage.value = video.img;
+    bannerVideo.value = video.video;
+    bannerAuthor.value = video.author;
   }
 };
+
 
 onMounted(async () => {
   await fetchVideos(page);
@@ -44,7 +73,8 @@ watch(
 
     <main class="min-h-screen bg-black text-white">
       <section>
-        <HeroBanner :header="'Most Longest'" :text="'Sinubo ang batuta ni pinsan - PINAYFLIX SEX VIDEOS'"></HeroBanner>
+        <HeroBanner :header="'Most longest'" :text="bannerHeader" :image="bannerImage" :video="bannerVideo"
+        :author="bannerAuthor"></HeroBanner>
       </section>
 
       <section>

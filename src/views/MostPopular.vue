@@ -1,28 +1,57 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { onMounted, watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue';
 import HeroBanner from '../components/heros/HeroBanner.vue';
 import ScrollToTopButton from '../components/buttons/ScrollToTopButton.vue';
 
-import { mostViewServices } from '../services/most-viewed';
+import { popularServices } from "../services/popular.service"
 import SliderContent from '../components/slider/ContentSlider.vue';
+
+interface Video {
+  title: string;
+  img: string;
+  video: string;
+  author: string;
+}
+
+let bannerHeader = ref<string | null>(null);
+let bannerImage = ref<string | null>(null);
+let bannerVideo = ref<string | null>(null);
+let bannerAuthor = ref<string | null>(null);
 
 const route = useRoute();
 
 const pageParam = route.params.page;
-const page = Array.isArray(pageParam) ? pageParam[0] : '1'; 
+const page = Array.isArray(pageParam) ? pageParam[0] : '1';
 
-const mostViewService = mostViewServices();
+const popularService = popularServices();
 
 const fetchVideos = async (page: string) => {
   if (page) {
-    await mostViewService.getMostVideosByPage(page);
+    await popularService.getPopularVideosByPage(page);
+
+
+    const video = popularService.videoList[Math.floor(Math.random() * popularService.videoList.length)] as Video;
+
+    bannerHeader.value = video.title;
+    bannerImage.value = video.img;
+    bannerVideo.value = video.video;
+    bannerAuthor.value = video.author;
+
   } else {
-    await mostViewService.getMostViewvideos();
+    await popularService.getPopularVideosByPage('1');
+    const video = popularService.videoList[Math.floor(Math.random() * popularService.videoList.length)] as Video;
+
+
+    bannerHeader.value = video.title;
+    bannerImage.value = video.img;
+    bannerVideo.value = video.video;
+    bannerAuthor.value = video.author;
   }
 };
+
 
 onMounted(async () => {
   await fetchVideos(page);
@@ -44,12 +73,13 @@ watch(
 
     <main class="min-h-screen bg-black text-white">
       <section>
-        <HeroBanner :header="'Most Popular'" :text="'Sinubo ang batuta ni pinsan - PINAYFLIX SEX VIDEOS'"></HeroBanner>
+        <HeroBanner :header="'Most popular'" :text="bannerHeader" :image="bannerImage" :video="bannerVideo"
+          :author="bannerAuthor"></HeroBanner>
       </section>
 
       <section>
-        <SliderContent :header="'Most viewed'" :items="mostViewService.videoList" :page="page || '1'"
-          :totalPages="Number(mostViewService.totalPages)" :pathName="'most-popular'" />
+        <SliderContent :header="'Most Popular'" :items="popularService.videoList" :page="page || '1'"
+          :totalPages="Number(popularService.totalPages)" :pathName="'most-popular'" />
       </section>
 
       <ScrollToTopButton />

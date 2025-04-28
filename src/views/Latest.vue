@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { onMounted, watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue';
@@ -9,18 +9,46 @@ import ScrollToTopButton from '../components/buttons/ScrollToTopButton.vue';
 import { latestServices } from '../services/latest.service';
 import SliderContent from '../components/slider/ContentSlider.vue';
 
+interface Video {
+  title: string;
+  img: string;
+  video: string;
+  author: string;
+}
+
+let bannerHeader = ref<string | null>(null);
+let bannerImage = ref<string | null>(null);
+let bannerVideo = ref<string | null>(null);
+let bannerAuthor = ref<string | null>(null);
+
 const route = useRoute();
 
 const pageParam = route.params.page;
-const page = Array.isArray(pageParam) ? pageParam[0] : '1'; 
+const page = Array.isArray(pageParam) ? pageParam[0] : '1';
 
 const latestService = latestServices();
 
 const fetchVideos = async (page: string) => {
   if (page) {
     await latestService.getLatestVideosByPage(page);
+
+
+    const video = latestService.videoList[Math.floor(Math.random() * latestService.videoList.length)] as Video;
+
+    bannerHeader.value = video.title;
+    bannerImage.value = video.img;
+    bannerVideo.value = video.video;
+    bannerAuthor.value = video.author;
+
   } else {
     await latestService.getLatestVideosByPage('1');
+    const video = latestService.videoList[Math.floor(Math.random() * latestService.videoList.length)] as Video;
+
+
+    bannerHeader.value = video.title;
+    bannerImage.value = video.img;
+    bannerVideo.value = video.video;
+    bannerAuthor.value = video.author;
   }
 };
 
@@ -44,7 +72,8 @@ watch(
 
     <main class="min-h-screen bg-black text-white">
       <section>
-        <HeroBanner :header="'latest'" :text="'Sinubo ang batuta ni pinsan - PINAYFLIX SEX VIDEOS'"></HeroBanner>
+        <HeroBanner :header="'latest'" :text="bannerHeader" :image="bannerImage" :video="bannerVideo"
+          :author="bannerAuthor"></HeroBanner>
       </section>
 
       <section>

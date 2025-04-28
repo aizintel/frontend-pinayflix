@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, watch } from 'vue';
+import { onMounted, watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue';
@@ -8,6 +8,18 @@ import ScrollToTopButton from '../components/buttons/ScrollToTopButton.vue';
 
 import { randomServices } from '../services/random.service';
 import SliderContent from '../components/slider/ContentSlider.vue';
+
+interface Video {
+  title: string;
+  img: string;
+  video: string;
+  author: string;
+}
+
+let bannerHeader = ref<string | null>(null);
+let bannerImage = ref<string | null>(null);
+let bannerVideo = ref<string | null>(null);
+let bannerAuthor = ref<string | null>(null);
 
 const route = useRoute();
 
@@ -19,8 +31,24 @@ const randomService = randomServices();
 const fetchVideos = async (page: string) => {
   if (page) {
     await randomService.getRandomVideosByPage(page);
+
+
+    const video = randomService.videoList[Math.floor(Math.random() * randomService.videoList.length)] as Video;
+
+    bannerHeader.value = video.title;
+    bannerImage.value = video.img;
+    bannerVideo.value = video.video;
+    bannerAuthor.value = video.author;
+
   } else {
     await randomService.getRandomVideosByPage('1');
+    const video = randomService.videoList[Math.floor(Math.random() * randomService.videoList.length)] as Video;
+
+
+    bannerHeader.value = video.title;
+    bannerImage.value = video.img;
+    bannerVideo.value = video.video;
+    bannerAuthor.value = video.author;
   }
 };
 
@@ -44,11 +72,12 @@ watch(
 
     <main class="min-h-screen bg-black text-white">
       <section>
-        <HeroBanner :header="'Random'" :text="'Sinubo ang batuta ni pinsan - PINAYFLIX SEX VIDEOS'"></HeroBanner>
+        <HeroBanner :header="'Random'" :text="bannerHeader" :image="bannerImage" :video="bannerVideo"
+        :author="bannerAuthor"></HeroBanner>
       </section>
 
       <section>
-        <SliderContent :header="'Most Longest'" :items="randomService.videoList" :page="page || '1'"
+        <SliderContent :header="'Random'" :items="randomService.videoList" :page="page || '1'"
           :totalPages="Number(randomService.totalPages)" :pathName="'random'" />
       </section>
 

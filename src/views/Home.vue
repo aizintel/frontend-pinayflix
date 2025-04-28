@@ -10,6 +10,18 @@ import { onMounted } from 'vue';
 
 import HomeSlider from '../components/slider/HomeSlider.vue';
 
+// interface Video {
+//   title: string;
+//   img: string;
+//   video: string;
+//   author: string;
+// }
+
+// let bannerHeader = ref<string | null>(null);
+// let bannerImage = ref<string | null>(null);
+// let bannerVideo = ref<string | null>(null);
+// let bannerAuthor = ref<string | null>(null);
+
 const popularService = popularServices();
 const homeService = homeServices();
 
