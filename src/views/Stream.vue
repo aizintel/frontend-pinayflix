@@ -253,7 +253,15 @@ const retryVideo = () => {
   }, 100);
 };
 
+watch(
+    () => route.fullPath,
+    () => {
+        window.scrollTo(0, 0);
+    }
+);
+
 onMounted(() => {
+  window.scrollTo(0, 0)
   document.addEventListener('fullscreenchange', () => {
     isFullscreen.value = !!document.fullscreenElement;
   });
