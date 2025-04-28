@@ -168,7 +168,7 @@ onBeforeUnmount(() => {
           <!-- Center Section: Navigation -->
           <div class="hidden lg:flex justify-center flex-1 px-4">
             <nav class="flex items-center">
-              <ul class="menu menu-horizontal rounded-box p-1">
+              <ul class="menu menu-horizontal rounded-box p-1 text-lg uppercase">
                 <li>
                   <router-link 
                     to="/pinay/latest" 
@@ -239,6 +239,7 @@ onBeforeUnmount(() => {
 
     <!-- Search Overlay - Styled like the reference image -->
     <div 
+    @click="toggleSearch"
       id="search-container"
       :class="[
         'fixed inset-0 bg-black/90 z-40 flex items-center justify-center transition-all duration-300 ease-in-out',
@@ -247,15 +248,15 @@ onBeforeUnmount(() => {
     >
       <div class="container mx-auto px-4 relative">
         <!-- Exit button for both mobile and desktop -->
-        <button 
-          class="absolute top-0 right-4 md:right-8 text-gray-400 hover:text-white p-2"
+        <!-- <button 
+          class="absolute top-0 right-4 md:right-8 text-gray-400 hover:text-white p-2 lg:hidden "
           @click="toggleSearch"
           aria-label="Close search"
         >
           <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
-        </button>
+        </button> -->
         
         <div class="flex flex-col items-center">
           <!-- Keyboard shortcut indicator -->
@@ -307,7 +308,7 @@ onBeforeUnmount(() => {
         </button>
         
         <!-- Main Navigation -->
-        <nav class="flex flex-col space-y-1">
+        <nav class="flex flex-col space-y-1 uppercase">
           <router-link 
             to="/pinay/latest" 
             class="text-xl font-medium py-3 px-4 border-l-4 border-transparent hover:border-red-600 hover:bg-red-600/20 rounded-r-lg transition-all duration-200"
