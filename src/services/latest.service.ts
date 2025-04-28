@@ -3,8 +3,6 @@ import api from '../lib/axios';
 import { defineStore } from 'pinia';
 
 export const latestServices = defineStore('latest', {
-
-
   state: () => ({
     isLoading: false,
     totalPages: "",
@@ -14,9 +12,8 @@ export const latestServices = defineStore('latest', {
   getters: {
 
   },
-
   actions: {
-    async getLatestVideosByPage(page?: string) {
+    async getLatestVideosByPage(page?: string | number) {
       this.isLoading = true;
       try {
         const response = await api.post('/latest', { 'page': page });

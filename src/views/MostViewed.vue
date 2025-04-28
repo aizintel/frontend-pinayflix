@@ -6,7 +6,7 @@ import Header from '../components/Header.vue';
 import HeroBanner from '../components/heros/HeroBanner.vue';
 import ScrollToTopButton from '../components/buttons/ScrollToTopButton.vue';
 
-import { mostViewServices } from '../services/most-viewed';
+import { mostViewServices } from '../services/most-viewed.service';
 import SliderContent from '../components/slider/ContentSlider.vue';
 
 interface Video {
@@ -30,6 +30,7 @@ const mostViewService = mostViewServices();
 
 const fetchVideos = async (page: string) => {
   if (page) {
+    const mostViewService = mostViewServices();
     const data = await mostViewService.getMostVideosByPage(page);
     console.log(data);
 
@@ -41,6 +42,7 @@ const fetchVideos = async (page: string) => {
     bannerAuthor.value = video.author;
 
   } else {
+    const mostViewService = mostViewServices();
     const data = await mostViewService.getMostVideosByPage('1');
     console.log(data);
     const video = mostViewService.videoList[Math.floor(Math.random() * mostViewService.videoList.length)] as Video;

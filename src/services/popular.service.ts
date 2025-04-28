@@ -30,7 +30,7 @@ export const popularServices = defineStore('latest', {
       }
     },
 
-    async getPopularVideosByPage(page?: string) {
+    async getPopularVideosByPage(page?: string | number) {
       this.isLoading = true;
       try {
         const response = await api.post('/most-popular', { 'page': page });

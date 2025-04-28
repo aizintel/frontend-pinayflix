@@ -8,6 +8,7 @@ import HeroBanner from '../components/heros/HeroBanner.vue';
 import ScrollToTopButton from '../components/buttons/ScrollToTopButton.vue';
 
 import { popularServices } from "../services/popular.service"
+
 import SliderContent from '../components/slider/ContentSlider.vue';
 
 interface Video {
@@ -29,8 +30,9 @@ const page = Array.isArray(pageParam) ? pageParam[0] : '1';
 
 const popularService = popularServices();
 
-const fetchVideos = async (page: string) => {
+const fetchVideos = async (page: string | number) => {
   if (page) {
+    const popularService = popularServices();
     const data = await popularService.getPopularVideosByPage(page);
     console.log(data);
 
@@ -42,6 +44,7 @@ const fetchVideos = async (page: string) => {
     bannerAuthor.value = video.author;
 
   } else {
+    const popularService = popularServices();
     const data = await popularService.getPopularVideosByPage('1');
     console.log(data);
     const video = popularService.videoList[Math.floor(Math.random() * popularService.videoList.length)] as Video;

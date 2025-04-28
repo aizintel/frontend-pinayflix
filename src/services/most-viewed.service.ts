@@ -17,7 +17,7 @@ export const mostViewServices = defineStore('most-view', {
 
 
     actions: {
-        async getMostViewvideos() {
+        async getMostViewvideos(): Promise<any> {
             this.isLoading = true;
             try {
                 const response = await api.post('/most-view', { 'page': 1 });
@@ -30,7 +30,7 @@ export const mostViewServices = defineStore('most-view', {
             }
         },
 
-        async getMostVideosByPage(page?: string) {
+        async getMostVideosByPage(page?: string): Promise<any>  {
             this.isLoading = true;
             try {
                 const response = await api.post('/most-view', { 'page': page });

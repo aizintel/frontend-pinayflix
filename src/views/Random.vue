@@ -30,6 +30,7 @@ const randomService = randomServices();
 
 const fetchVideos = async (page: string) => {
   if (page) {
+    const randomService = randomServices();
     const data = await randomService.getRandomVideosByPage(page);
     console.log(data);
 
@@ -41,6 +42,7 @@ const fetchVideos = async (page: string) => {
     bannerAuthor.value = video.author;
 
   } else {
+    const randomService = randomServices();
     const data = await randomService.getRandomVideosByPage('1');
     console.log(data);
     const video = randomService.videoList[Math.floor(Math.random() * randomService.videoList.length)] as Video;
