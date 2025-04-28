@@ -1,4 +1,5 @@
 <script setup lang="ts">
+//Popular
 import { onMounted, watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Footer from '../components/Footer.vue';
