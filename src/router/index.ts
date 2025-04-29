@@ -18,8 +18,12 @@ const routes = [
     { path: '/pinay/most-viewed/:page?', component: MostViewed, name: 'most-viewed' },
     { path: '/pinay/most-popular/:page?', component: MostPopular, name: 'most-popular' },
     { path: '/pinay/most-longest/:page?', component: MostLongest, name: 'most-longest' },
-    { path: '/pinay/stream', component: Stream, name: 'stream' }
+    { path: '/pinay/stream', component: Stream, name: 'stream' },
+
+    { path: '/:pathMatch(.*)*', redirect: '/' }
+
   ]
+  
   
 const router = createRouter({
     history: createWebHistory(),
