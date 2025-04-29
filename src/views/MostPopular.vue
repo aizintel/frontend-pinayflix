@@ -32,7 +32,7 @@ const route = useRoute();
 const pageParam = route.params.page;
 const page = Array.isArray(pageParam) ? pageParam[0] : '1';
 
-const popularService = popularServices() as PopularService;
+let popularService = {} as PopularService;
 
 const setRandomBanner = (videoList: Video[]) => {
   if (!videoList.length) return;
@@ -45,13 +45,19 @@ const setRandomBanner = (videoList: Video[]) => {
 };
 
 const fetchVideos = async (page: string) => {
-  const data = await popularService.getPopularVideosByPage(page);
-  console.log(data);
+  try {
+    const data = await popularService.getPopularVideosByPage(page);
+    console.log(data);
 
-  setRandomBanner(popularService.videoList as Video[]);
+    setRandomBanner(popularService.videoList as Video[]);
+  } catch (e) {
+    console.log('Error in fetch', e);
+  }
+
 };
 
 onMounted(async () => {
+  popularService = popularServices() as PopularService;
   await fetchVideos(page);
 });
 

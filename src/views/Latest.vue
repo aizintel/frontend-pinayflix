@@ -32,7 +32,7 @@ const route = useRoute();
 const pageParam = route.params.page;
 const page = Array.isArray(pageParam) ? pageParam[0] : '1';
 
-const latestService = latestServices() as LatestService;
+let latestService = {} as LatestService;
 
 const setRandomBanner = (videoList: Video[]) => {
   if (!videoList.length) return;
@@ -45,13 +45,18 @@ const setRandomBanner = (videoList: Video[]) => {
 };
 
 const fetchVideos = async (page: string) => {
-  const data = await latestService.getLatestVideosByPage(page);
-  console.log(data);
-  setRandomBanner(latestService.videoList as Video[]);
-  //update
+  try {
+    const data = await latestService.getLatestVideosByPage(page);
+    console.log(data);
+    setRandomBanner(latestService.videoList as Video[]);
+  } catch (e) {
+    console.log('Error in fetch', e);
+  }
+
 };
 
 onMounted(async () => {
+  latestService = latestServices() as LatestService;
   await fetchVideos(page);
 });
 

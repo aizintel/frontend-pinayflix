@@ -32,7 +32,7 @@ const route = useRoute();
 const pageParam = route.params.page;
 const page = Array.isArray(pageParam) ? pageParam[0] : '1';
 
-const homeService = homeServices() as HomeService;
+let homeService = {} as HomeService;
 
 const setRandomBanner = (videoList: Video[]) => {
   if (!videoList.length) return;
@@ -45,13 +45,19 @@ const setRandomBanner = (videoList: Video[]) => {
 };
 
 const fetchVideos = async (page: string) => {
-  const data = await homeService.getHomeVideosByPage(page);
-  console.log(data);
+  try {
+    const data = await homeService.getHomeVideosByPage(page);
+    console.log(data);
 
-  setRandomBanner(homeService.videoList as Video[]);
+    setRandomBanner(homeService.videoList as Video[]);
+  } catch (e) {
+    console.log('Error in fetch', e);
+  }
+
 };
 
 onMounted(async () => {
+  homeService = homeServices() as HomeService;
   await fetchVideos(page);
 });
 

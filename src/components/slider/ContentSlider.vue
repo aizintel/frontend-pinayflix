@@ -16,7 +16,7 @@ interface VideoItem {
 }
 
 const props = defineProps<{
-    items: VideoItem[];
+    items: VideoItem[] | undefined;
     header?: string;
     page?: string;
     totalPages?: number;
@@ -120,7 +120,7 @@ const goToNextPage = () => {
             </div>
         </div>
         <div v-else>
-            <BannerCard :items="items" :header="header" />
+            <BannerCard :items="items || []" :header="header" />
         </div>
     </section>
 

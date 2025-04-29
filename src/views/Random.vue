@@ -32,7 +32,7 @@ const route = useRoute();
 const pageParam = route.params.page;
 const page = Array.isArray(pageParam) ? pageParam[0] : '1';
 
-const randomService = randomServices() as RandomService;
+let randomService = {} as RandomService;
 
 const setRandomBanner = (videoList: Video[]) => {
   if (!videoList.length) return;
@@ -45,13 +45,19 @@ const setRandomBanner = (videoList: Video[]) => {
 };
 
 const fetchVideos = async (page: string) => {
-  const data = await randomService.getRandomVideosByPage(page);
-  console.log(data);
+  try {
+    const data = await randomService.getRandomVideosByPage(page);
+    console.log(data);
 
-  setRandomBanner(randomService.videoList as Video[]);
+    setRandomBanner(randomService.videoList as Video[]);
+  } catch (e) {
+    console.log('Error in fetch', e);
+  }
+
 };
 
 onMounted(async () => {
+  randomService = randomServices() as RandomService;
   await fetchVideos(page);
 });
 
@@ -78,7 +84,7 @@ watch(
       </section>
 
       <section>
-        <SliderContent :header="'Random'" :items="randomService.videoList" :page="page || '1'"
+        <SliderContent :header="'Random'" :items="randomService.videoList"
           :totalPages="Number(randomService.totalPages)" :pathName="'random'" />
       </section>
 
