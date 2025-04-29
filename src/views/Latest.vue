@@ -47,8 +47,8 @@ const setRandomBanner = (videoList: Video[]) => {
 const fetchVideos = async (page: string) => {
   const data = await latestService.getLatestVideosByPage(page);
   console.log(data);
-
   setRandomBanner(latestService.videoList as Video[]);
+  //update
 };
 
 onMounted(async () => {
