@@ -2,6 +2,7 @@
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { useRoute } from 'vue-router';
 
+
 const route = useRoute();
 const isScrolled = ref(false);
 const isMobileMenuOpen = ref(false);
@@ -106,9 +107,8 @@ const handleKeyDown = (e: KeyboardEvent) => {
 
 const goToNextRoute = (route: string) => {
   // Programmatically navigate
-  // window.location.href = route // Full page reload
+  window.location.href = route; // Full page reload
 
-  console.log(route)
 
   // Or, if you want to trigger Vue Router without reloading:
   // this.$router.push('/pinay/most-popular').then(() => {
