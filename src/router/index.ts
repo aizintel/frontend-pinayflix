@@ -8,9 +8,11 @@ import MostLongest from '../views/MostLongest.vue'
 import Stream from '../views/Stream.vue'
 import Random from '../views/Random.vue'
 import Latest from '../views/Latest.vue'
+import Landing from '../views/Landing.vue'
 
 const routes = [
-    { path: '/', component: Home, name: 'home' },
+    { path: '/', component: Landing, name: 'landing' },
+    { path: '/pinay/home/:page?', component: Home, name: 'home' },
     { path: '/pinay/random/:page?', component: Random, name: 'random' },
     { path: '/pinay/latest/:page?', component: Latest, name: 'latest' },
     { path: '/pinay/most-viewed/:page?', component: MostViewed, name: 'most-viewed' },

@@ -4,23 +4,25 @@ import { defineStore } from 'pinia';
 export const homeServices = defineStore('home', {
   state: () => ({
     isLoading: false,
-    videoList: []
+    videoList: [],
+    totalPages: "",
   }),
 
   getters: {
   },
 
   actions: {
-    async getHomeVideos() {
+    async getHomeVideosByPage(page?: string): Promise<any> {
       this.isLoading = true;
       try {
-        const response = await api.post('/home', { 'page': 1 });
+        const response = await api.post('/home', { 'page': page });
+        this.isLoading = false;
+        this.totalPages = response.data.totalPages;
         this.videoList = response.data.data;
         return response.data;
+
       } catch (e) {
-        console.error('Error in home service', e);
-      } finally {
-        this.isLoading = false;
+        console.log('Error in home service', e)
       }
     }
   }

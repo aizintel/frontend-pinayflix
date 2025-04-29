@@ -10,27 +10,8 @@ export const mostViewServices = defineStore('most-view', {
         totalPages: "",
         videoList: []
     }),
-
-    getters: {
-
-    },
-
-
     actions: {
-        async getMostViewvideos(): Promise<any> {
-            this.isLoading = true;
-            try {
-                const response = await api.post('/most-view', { 'page': 1 });
-                this.isLoading = false;
-                this.videoList = response.data.data;
-                return response.data;
-
-            } catch (e) {
-                console.log('Error in home service', e)
-            }
-        },
-
-        async getMostVideosByPage(page?: string): Promise<any>  {
+        async getMostVideosByPage(page?: string): Promise<any> {
             this.isLoading = true;
             try {
                 const response = await api.post('/most-view', { 'page': page });
@@ -40,7 +21,7 @@ export const mostViewServices = defineStore('most-view', {
                 return response.data;
 
             } catch (e) {
-                console.log('Error in home service', e)
+                console.log('Error in most-viewed service', e)
             }
         }
     }

@@ -171,6 +171,15 @@ onBeforeUnmount(() => {
               <ul class="menu menu-horizontal rounded-box p-1 text-lg uppercase">
                 <li>
                   <router-link 
+                    to="/pinay/home" 
+                    class="px-4 py-2 font-medium rounded-lg transition-colors"
+                    :class="isActive('/pinay/home') ? 'bg-red-600/50 text-white' : 'hover:bg-red-600/30'"
+                  >
+                    Home
+                  </router-link>
+                </li>
+                <li>
+                  <router-link 
                     to="/pinay/latest" 
                     class="px-4 py-2 font-medium rounded-lg transition-colors"
                     :class="isActive('/pinay/latest') ? 'bg-red-600/50 text-white' : 'hover:bg-red-600/30'"
@@ -309,6 +318,14 @@ onBeforeUnmount(() => {
         
         <!-- Main Navigation -->
         <nav class="flex flex-col space-y-1 uppercase">
+          <router-link 
+            to="/pinay/home" 
+            class="text-xl font-medium py-3 px-4 border-l-4 border-transparent hover:border-red-600 hover:bg-red-600/20 rounded-r-lg transition-all duration-200"
+            :class="{ 'border-red-600 bg-red-600/10': isActive('/pinay/home') }"
+            @click="closeMobileMenu"
+          >
+            Home
+          </router-link>
           <router-link 
             to="/pinay/latest" 
             class="text-xl font-medium py-3 px-4 border-l-4 border-transparent hover:border-red-600 hover:bg-red-600/20 rounded-r-lg transition-all duration-200"

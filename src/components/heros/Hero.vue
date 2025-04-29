@@ -1,5 +1,19 @@
 <script setup lang="ts">
 
+import { useRouter } from 'vue-router';
+const router = useRouter();
+
+function watchVideo(video?: string, author?: string, title?: string) {
+  router.push({
+    name: "stream",
+    query: {
+      video: video ?? '',
+      author: author ?? '',
+      title: title ?? ''
+    }
+  });
+}
+
 </script>
 
 <template>
@@ -37,12 +51,15 @@
 
         <!-- Call to action buttons -->
         <div class="flex flex-wrap gap-4 mt-8">
-          <button class="btn bg-red-600 hover:bg-red-700 text-white border-none px-8">
+          <button
+            @click="watchVideo('https://pinayflix.top/wp-content/uploads/2024/07/Flex-ni-madam-ang-kanyang-pepe.mp4', 'From: UPLOADER XXX', 'Flex ni madam ang kanyang pepe - PINAYFLIX SEX VIDEOS')"
+            class="btn bg-red-600 hover:bg-red-700 text-white border-none px-8">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
               stroke="currentColor" class="w-5 h-5 mr-2">
               <path stroke-linecap="round" stroke-linejoin="round"
                 d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
             </svg>
+
             Play Now
           </button>
           <!-- Future use -->

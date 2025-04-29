@@ -9,11 +9,8 @@ export const latestServices = defineStore('latest', {
     videoList: []
   }),
 
-  getters: {
-
-  },
   actions: {
-    async getLatestVideosByPage(page?: string | number) {
+    async getLatestVideosByPage(page?: string): Promise<any> {
       this.isLoading = true;
       try {
         const response = await api.post('/latest', { 'page': page });

@@ -11,15 +11,11 @@ export const randomServices = defineStore('random', {
         videoList: []
     }),
 
-    getters: {
-
-    },
-
     actions: {
-        async getRandomVideosByPage(page?: string) {
+        async getRandomVideosByPage(page?: string): Promise<any> {
             this.isLoading = true;
             try {
-                const response = await api.post('/most-view', { 'page': page });
+                const response = await api.post('/random', { 'page': page });
                 this.isLoading = false;
                 this.totalPages = response.data.totalPages;
                 this.videoList = response.data.data;

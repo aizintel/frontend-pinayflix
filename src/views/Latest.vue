@@ -1,56 +1,54 @@
 <script setup lang="ts">
-//Latest
 import { onMounted, watch, ref } from 'vue';
 import { useRoute } from 'vue-router';
 import Footer from '../components/Footer.vue';
 import Header from '../components/Header.vue';
 import HeroBanner from '../components/heros/HeroBanner.vue';
 import ScrollToTopButton from '../components/buttons/ScrollToTopButton.vue';
-
-import { latestServices } from '../services/latest.service';
 import SliderContent from '../components/slider/ContentSlider.vue';
+import { latestServices } from '../services/latest.service';
 
 interface Video {
   title: string;
   img: string;
   video: string;
   author: string;
+  date: string;
+  link: string;
 }
 
-let bannerHeader = ref<string | null>(null);
-let bannerImage = ref<string | null>(null);
-let bannerVideo = ref<string | null>(null);
-let bannerAuthor = ref<string | null>(null);
+interface LatestService {
+  getLatestVideosByPage: (page: string) => Promise<any>;
+  videoList: Video[];
+  totalPages: string;
+}
+
+const bannerHeader = ref<string | null>(null);
+const bannerImage = ref<string | null>(null);
+const bannerVideo = ref<string | null>(null);
+const bannerAuthor = ref<string | null>(null);
 
 const route = useRoute();
-
 const pageParam = route.params.page;
 const page = Array.isArray(pageParam) ? pageParam[0] : '1';
 
-const latestService = latestServices();
+const latestService = latestServices() as LatestService;
 
-const fetchVideos = async (page: string | number) => {
-  if (page) {
-    const data = await latestService.getLatestVideosByPage(page);
-    console.log(data);
+const setRandomBanner = (videoList: Video[]) => {
+  if (!videoList.length) return;
 
-    const video = latestService.videoList[Math.floor(Math.random() * latestService.videoList.length)] as Video;
+  const randomVideo = videoList[Math.floor(Math.random() * videoList.length)];
+  bannerHeader.value = randomVideo.title;
+  bannerImage.value = randomVideo.img;
+  bannerVideo.value = randomVideo.video;
+  bannerAuthor.value = randomVideo.author;
+};
 
-    bannerHeader.value = video.title;
-    bannerImage.value = video.img;
-    bannerVideo.value = video.video;
-    bannerAuthor.value = video.author;
+const fetchVideos = async (page: string) => {
+  const data = await latestService.getLatestVideosByPage(page);
+  console.log(data);
 
-  } else {
-    const data = await latestService.getLatestVideosByPage('1');
-    const video = latestService.videoList[Math.floor(Math.random() * latestService.videoList.length)] as Video;
-    console.log(data);
-
-    bannerHeader.value = video.title;
-    bannerImage.value = video.img;
-    bannerVideo.value = video.video;
-    bannerAuthor.value = video.author;
-  }
+  setRandomBanner(latestService.videoList as Video[]);
 };
 
 onMounted(async () => {
@@ -60,10 +58,12 @@ onMounted(async () => {
 watch(
   () => route.params.page,
   async (newPage) => {
-    await fetchVideos(newPage as string);
+    const resolvedPage = Array.isArray(newPage) ? newPage[0] : (newPage || '1');
+    await fetchVideos(resolvedPage);
   }
 );
 </script>
+
 
 <template>
   <div id="app">

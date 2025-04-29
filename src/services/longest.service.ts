@@ -11,35 +11,19 @@ export const longestServices = defineStore('longest', {
         totalPages: ""
     }),
 
-    getters: {
-
-    },
-
-
     actions: {
-        async getMostlongestVideos() {
-            this.isLoading = true;
-            try {
-                const response = await api.post('/longest', { 'page': 1 });
-                this.isLoading = false;
-                this.videoList = response.data.data;
-                return response.data;
 
-            } catch (e) {
-                console.log('Error in home service', e)
-            }
-        },
-        async getMostLongestVideosByPage(page?: string) {
+        async getLongestVideosByPage(page?: string): Promise<any> {
             this.isLoading = true;
             try {
-                const response = await api.post('/most-longest', { 'page': page });
+                const response = await api.post('/longest', { 'page': page });
                 this.isLoading = false;
                 this.totalPages = response.data.totalPages;
                 this.videoList = response.data.data;
                 return response.data;
 
             } catch (e) {
-                console.log('Error in home service', e)
+                console.log('Error in longest service', e)
             }
         }
     }
